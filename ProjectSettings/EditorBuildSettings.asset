@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Main.unity
     guid: cd0d7362d51da0c40a000d8c28b9f1e7
   - enabled: 1
+    path: Assets/Scenes/Ranking.unity
+    guid: 8099b11a0a9b7c0448bdd691979415d0
+  - enabled: 1
     path: Assets/Scenes/EndRoundScene.unity
     guid: e0afad1d601d46a44b092d5e6189e766
   m_configObjects: {}
