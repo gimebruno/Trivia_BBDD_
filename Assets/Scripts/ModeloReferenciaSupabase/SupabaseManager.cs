@@ -68,7 +68,7 @@ public class SupabaseManager : MonoBehaviour
         else
         {
             print("No user found or invalid response.");
-            _stateText.text = "No user found or invalid response.";
+            _stateText.text = "Ningun usuario encontrado";
             _stateText.color = Color.red;
         }
     }

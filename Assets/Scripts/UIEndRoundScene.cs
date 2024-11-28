@@ -10,7 +10,7 @@ public class UIEnd : MonoBehaviour
 
 public void LoadLoginScene()
 {
-    SceneManager.LoadScene("LoginScene");
+    SceneManager.LoadScene("TriviaSelectScene");
 }
 
 }

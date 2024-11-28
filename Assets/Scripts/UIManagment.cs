@@ -45,14 +45,38 @@ public class UIManagment : MonoBehaviour
         _originalButtonColor = _buttons[0].GetComponent<Image>().color;
         ResetTimer(); // Resetea y arranca el temporizador al inicio
     }
+void Update()
+{ 
+    UpdateTimer();
+    _categoryText.text = PlayerPrefs.GetString("SelectedTrivia");
+    _questionText.text = GameManager.Instance.responseList[GameManager.Instance.randomQuestionIndex].QuestionText;
+    GameManager.Instance.CategoryAndQuestionQuery(queryCalled);
 
-    void Update()
+    if (GameManager.Instance == null)
     {
-        UpdateTimer();
-        _categoryText.text = PlayerPrefs.GetString("SelectedTrivia");
-        _questionText.text = GameManager.Instance.responseList[GameManager.Instance.randomQuestionIndex].QuestionText;
-        GameManager.Instance.CategoryAndQuestionQuery(queryCalled);
+        Debug.LogError("GameManager.Instance es null.");
+        return;
     }
+
+    if (GameManager.Instance.responseList == null || GameManager.Instance.responseList.Count == 0)
+    {
+        Debug.LogError("responseList está vacío o no inicializado.");
+        return;
+    }
+
+    if (GameManager.Instance.randomQuestionIndex < 0 || GameManager.Instance.randomQuestionIndex >= GameManager.Instance.responseList.Count)
+    {
+        Debug.LogError("randomQuestionIndex no tiene un valor válido.");
+        return;
+    }
+
+    // Actualiza los textos si todo es válido
+    _categoryText.text = PlayerPrefs.GetString("SelectedTrivia");
+    _questionText.text = GameManager.Instance.responseList[GameManager.Instance.randomQuestionIndex].QuestionText;
+
+    // Llama a la función si es necesario
+    GameManager.Instance.CategoryAndQuestionQuery(queryCalled);
+}
 
     public void OnButtonClick(int buttonIndex)
     {
@@ -99,12 +123,18 @@ public class UIManagment : MonoBehaviour
         ResetTimer(); // Reinicia el temporizador para la siguiente pregunta
     }
 
-    public void PreviousScene()
-    {
-        Destroy(GameManager.Instance);
-        Destroy(UIManagment.Instance);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
-    }
+   public void PreviousScene()
+{
+    // Destruir explícitamente las instancias de GameManager y UIManagment
+    Destroy(GameManager.Instance.gameObject);
+    Destroy(UIManagment.Instance.gameObject);
+
+    // Cargar la escena anterior
+    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+    Debug.Log($"GameManager.Instance: {GameManager.Instance}");
+Debug.Log($"responseList: {GameManager.Instance?.responseList}");
+Debug.Log($"randomQuestionIndex: {GameManager.Instance?.randomQuestionIndex}");
+}
 
     private void ResetTimer()
     {
