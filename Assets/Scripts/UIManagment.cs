@@ -48,8 +48,14 @@ public class UIManagment : MonoBehaviour
 void Update()
 { 
     UpdateTimer();
-    _categoryText.text = PlayerPrefs.GetString("SelectedTrivia");
-    _questionText.text = GameManager.Instance.responseList[GameManager.Instance.randomQuestionIndex].QuestionText;
+if (_categoryText != null)
+{
+    _categoryText.text = PlayerPrefs.GetString("SelectedTrivia", "Default Value");
+}
+else
+{
+    Debug.LogWarning("_categoryText no está asignado.");
+}    _questionText.text = GameManager.Instance.responseList[GameManager.Instance.randomQuestionIndex].QuestionText;
     GameManager.Instance.CategoryAndQuestionQuery(queryCalled);
 
     if (GameManager.Instance == null)
@@ -99,6 +105,8 @@ void Update()
             GameManager.Instance.LoseLife(); // Resta una vida al jugador
             ChangeButtonColor(buttonIndex, Color.red);
             Invoke("RestoreButtonColor", 2f);
+            GameManager.Instance._answers.Clear();
+             Invoke("NextAnswer", 2f);
         }
     }
 
