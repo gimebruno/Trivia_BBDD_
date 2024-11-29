@@ -78,6 +78,10 @@ public class GameManager : MonoBehaviour
     }
 
  // Método para restar una vida
+public int GetScore()
+{
+    return _points;  // Asegúrate de que '_points' se actualice adecuadamente cuando se contesten las preguntas
+}
     public void LoseLife()
     {
         currentLives--;
@@ -99,9 +103,11 @@ public class GameManager : MonoBehaviour
     }
 
     // Método para finalizar la ronda
-    private void EndRound()
+    private async void EndRound()
     {
         Debug.Log("¡Se han agotado las vidas! Fin de la ronda.");
+        int userId = 1;  // Reemplaza con el ID del jugador actual
+    await ScoreManager.Instance.SaveScore(userId);
         SceneManager.LoadScene("EndRoundScene"); // Cambia a la escena de fin de ronda
     }
 }

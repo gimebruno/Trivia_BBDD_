@@ -97,6 +97,7 @@ else
             ChangeButtonColor(buttonIndex, Color.green);
             Invoke("RestoreButtonColor", 2f);
             GameManager.Instance._answers.Clear();
+            ScoreManager.Instance.AddPoints(50);
             Invoke("NextAnswer", 2f);
         }
         else
@@ -192,6 +193,6 @@ Debug.Log($"randomQuestionIndex: {GameManager.Instance?.randomQuestionIndex}");
                 ChangeButtonColor(i, Color.green);
                 break;
             }
-        }
-    }
+        }
+    }
 }
