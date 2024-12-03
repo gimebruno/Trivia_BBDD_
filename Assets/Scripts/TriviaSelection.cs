@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class TriviaSelectionWithButtons : MonoBehaviour
 {
@@ -16,12 +17,15 @@ public class TriviaSelectionWithButtons : MonoBehaviour
     [SerializeField] private List<TMP_Text> buttonLabels; // Textos de los botones
     [SerializeField] private List<UnityEngine.UI.Button> categoryButtons; // Referencia a los 6 botones
 
+
     async void Start()
     {
         clientSupabase = new Supabase.Client(supabaseUrl, supabaseKey);
 
         await SelectTrivias();
         AssignCategoriesToButtons();
+       
+
     }
 
     async Task SelectTrivias()
@@ -63,4 +67,9 @@ public class TriviaSelectionWithButtons : MonoBehaviour
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
+    public void rankingButton()
+{
+    SceneManager.LoadScene("Ranking");
+      
+}
 }

@@ -11,4 +11,5 @@ public class score : BaseModel
     public int puntaje { get; set; }
     [Column("usuario_id")]
     public int usuario_id { get; set; }
+    
 }

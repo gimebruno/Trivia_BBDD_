@@ -20,6 +20,7 @@ public class SupabaseManager : MonoBehaviour
     string supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpuZmx1Y3N0bndvYnhtb2VmZ2RrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzIyMjAwNzQsImV4cCI6MjA0Nzc5NjA3NH0.2O-1NG2AFAxkpKbKIv69XpGxRnZlfoH5ChZoWENtGNw"; // COMPLETAR
 
     Supabase.Client clientSupabase;
+    public static int currentUserId;
 
     private usuarios _usuarios = new usuarios();
 
@@ -40,7 +41,7 @@ public class SupabaseManager : MonoBehaviour
         // Filtra según los datos de login
         var login_password = await clientSupabase
             .From<usuarios>()
-            .Select("password")
+            .Select("password, id")
             .Where(usuarios => usuarios.username == _userIDInput.text)
             .Get();
 
@@ -54,6 +55,7 @@ public class SupabaseManager : MonoBehaviour
                 print("LOGIN SUCCESSFUL");
                 _stateText.text = "LOGIN SUCCESSFUL";
                 _stateText.color = Color.green;
+                 currentUserId = login_password.Models[0].id;
 
                 // Cargar la siguiente escena después de un login exitoso
                 SceneManager.LoadScene("TriviaSelectScene");

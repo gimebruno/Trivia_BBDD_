@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -10,11 +12,11 @@ public class GameManager : MonoBehaviour
     public int randomQuestionIndex = 0;
     public List<string> _answers = new List<string>();
     public bool queryCalled;
-    private int _points;
-    private int _maxAttempts = 10;
     public int _numQuestionAnswered = 0;
     string _correctAnswer;
     public int currentLives = 3;
+    
+    
 
     public static GameManager Instance { get; private set; }
 
@@ -78,10 +80,7 @@ public class GameManager : MonoBehaviour
     }
 
  // Método para restar una vida
-public int GetScore()
-{
-    return _points;  // Asegúrate de que '_points' se actualice adecuadamente cuando se contesten las preguntas
-}
+
     public void LoseLife()
     {
         currentLives--;
@@ -101,13 +100,17 @@ public int GetScore()
             EndRound();
         }
     }
+   
 
     // Método para finalizar la ronda
-    private async void EndRound()
+    private  void EndRound()
     {
         Debug.Log("¡Se han agotado las vidas! Fin de la ronda.");
-        int userId = 1;  // Reemplaza con el ID del jugador actual
-    await ScoreManager.Instance.SaveScore(userId);
+         // Reemplaza con el ID del jugador actual
+     Destroy(GameManager.Instance.gameObject);
+        Destroy(UIManagment.Instance.gameObject);
         SceneManager.LoadScene("EndRoundScene"); // Cambia a la escena de fin de ronda
     }
+  
+
 }

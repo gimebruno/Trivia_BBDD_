@@ -9,12 +9,14 @@ public class UIManagment : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI _categoryText;
     [SerializeField] TextMeshProUGUI _questionText;
-    [SerializeField] TextMeshProUGUI timerText; // Referencia al TimerText
+    [SerializeField] TextMeshProUGUI timerText; 
+     [SerializeField] TextMeshProUGUI _puntosText;// Referencia al TimerText
 
     string _correctAnswer;
     public Button[] _buttons = new Button[3];
     [SerializeField] Button _backButton;
     [SerializeField] Button _menuButton;
+   
 
     private List<string> _answers = new List<string>();
     public bool queryCalled;
@@ -23,7 +25,8 @@ public class UIManagment : MonoBehaviour
 
     private float timerDuration = 15f; // Duración inicial del temporizador
     private float timerRemaining;     // Tiempo restante
-    private bool isTimerRunning;      // Indica si el temporizador está en marcha
+    private bool isTimerRunning;     
+    private int _score=0; // Indica si el temporizador está en marcha
 
     void Awake()
     {
@@ -44,6 +47,7 @@ public class UIManagment : MonoBehaviour
         queryCalled = false;
         _originalButtonColor = _buttons[0].GetComponent<Image>().color;
         ResetTimer(); // Resetea y arranca el temporizador al inicio
+        ValidateButtons();
     }
 void Update()
 { 
@@ -97,7 +101,7 @@ else
             ChangeButtonColor(buttonIndex, Color.green);
             Invoke("RestoreButtonColor", 2f);
             GameManager.Instance._answers.Clear();
-            ScoreManager.Instance.AddPoints(50);
+            AddPoints(50);
             Invoke("NextAnswer", 2f);
         }
         else
@@ -125,24 +129,27 @@ else
             buttonImage.color = _originalButtonColor;
         }
     }
-
+  public void AddPoints(int points)
+    {
+        _score += points;
+        UpdateScoreDisplay();
+        
+    }
     private void NextAnswer()
     {
         queryCalled = false;
         ResetTimer(); // Reinicia el temporizador para la siguiente pregunta
     }
 
-   public void PreviousScene()
+  public void PreviousScene()
 {
-    // Destruir explícitamente las instancias de GameManager y UIManagment
-    Destroy(GameManager.Instance.gameObject);
-    Destroy(UIManagment.Instance.gameObject);
+    if (GameManager.Instance != null)
+        Destroy(GameManager.Instance.gameObject);
 
-    // Cargar la escena anterior
-    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
-    Debug.Log($"GameManager.Instance: {GameManager.Instance}");
-Debug.Log($"responseList: {GameManager.Instance?.responseList}");
-Debug.Log($"randomQuestionIndex: {GameManager.Instance?.randomQuestionIndex}");
+    if (UIManagment.Instance != null)
+        Destroy(UIManagment.Instance.gameObject);
+
+    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
 }
 
     private void ResetTimer()
@@ -195,4 +202,32 @@ Debug.Log($"randomQuestionIndex: {GameManager.Instance?.randomQuestionIndex}");
             }
         }
     }
+ private void UpdateScoreDisplay()
+    {
+       _puntosText.text = _score.ToString();
+    }
+  public int GetCurrentScore()
+    {
+        return _score;
+
+}
+private void ValidateButtons()
+{
+    if (_buttons == null || _buttons.Length == 0)
+    {
+        Debug.LogError("El array de botones no está asignado o está vacío.");
+        return;
+    }
+
+    for (int i = 0; i < _buttons.Length; i++)
+    {
+        if (_buttons[i] == null)
+        {
+            Debug.LogError($"Botón {i} no está asignado en el Inspector.");
+        }
+    }
+}
+
+
+
 }
